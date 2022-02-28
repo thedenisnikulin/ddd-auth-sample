@@ -78,6 +78,7 @@ builder.Services.Configure<RefreshSessionOptions>(
 
 builder.Services.AddAutoMapper(typeof(Infrastructure.Identity.MappingProfile).Assembly);
 
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -90,6 +91,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseRouting();
+
+app.UseCors("spec");
 
 app.Use(async (ctx, n) =>
 {

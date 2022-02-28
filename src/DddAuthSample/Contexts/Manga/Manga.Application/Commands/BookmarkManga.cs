@@ -29,9 +29,8 @@ public class BookmarkMangaCommand : IRequest<Unit>
 			var mangaId = new MangaId(request.MangaId);
 
 			var reader = _readerRepository.GetById(readerId);
-			var manga = _mangaRepository.GetById(mangaId);
 			
-			reader.AddMangaToBookmarks(manga, (Bookmark) Enum.Parse<Bookmark>(request.Bookmark));
+			reader.AddMangaToBookmarks(mangaId, (Bookmark) Enum.Parse<Bookmark>(request.Bookmark));
 
 			_readerRepository.Save();
 			return Unit.Task;

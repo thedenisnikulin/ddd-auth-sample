@@ -12,12 +12,12 @@ namespace Infrastructure.Identity.Services;
 public class UserService : IUserService
 {
 	private readonly AppDbContext _context;
-	private readonly UserManager<AppUser> _userManager;
+	private readonly UserManager<UserDataModel> _userManager;
 	private readonly IMapper _mapper;
 
 	public UserService(
 		AppDbContext context,
-		UserManager<AppUser> userManager,
+		UserManager<UserDataModel> userManager,
 		IMapper mapper)
 	{
 		_context = context;
@@ -27,25 +27,25 @@ public class UserService : IUserService
 
 	public Task Create(User user)
 	{
-		var appUser = _mapper.Map<AppUser>(user);
-		return _userManager.CreateAsync(appUser, appUser.PasswordHash);
+		var userDataModel = _mapper.Map<UserDataModel>(user);
+		return _userManager.CreateAsync(userDataModel, userDataModel.PasswordHash);
 	}
 
 	public Task Update(User user)
 	{
-		var appUser = _mapper.Map<AppUser>(user);
-		return _userManager.UpdateAsync(appUser);
+		var userDataModel = _mapper.Map<UserDataModel>(user);
+		return _userManager.UpdateAsync(userDataModel);
 	}
 
 	public Task<User> GetById(UserId userId)
 	{
 		return _userManager.FindByIdAsync(userId.Value.ToString())
-			.ContinueWith(appUser => _mapper.Map<User>(appUser));
+			.ContinueWith(userDataModel => _mapper.Map<User>(userDataModel));
 	}
 
 	public Task<User> GetByName(string name)
 	{
 		return _userManager.FindByNameAsync(name)
-			.ContinueWith(appUser => _mapper.Map<User>(appUser));
+			.ContinueWith(userDataModel => _mapper.Map<User>(userDataModel.Result));
 	}
 }

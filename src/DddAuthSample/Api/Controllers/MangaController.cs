@@ -19,78 +19,71 @@ public class MangaController : ControllerBase
 		_mediator = mediator;
 	}
 
-	[HttpGet("all/by-reader-id")]
-	public ActionResult GetAllByAuthorId([FromBody] GetAllMangaByAuthorIdQuery query)
+	[HttpGet("reader/{readerId}")]
+	public async Task<ActionResult> GetAllByAuthorId([FromQuery] GetAllMangaByAuthorIdQuery query)
 	{
-		var result = _mediator.Send(query);
+		var result = await _mediator.Send(query);
 		return Ok(result);
 	}
 
-	[HttpGet("all/by-author-id")]
-	public ActionResult GetAllByReaderId([FromBody] GetAllMangaByReaderIdQuery query)
+	[HttpGet("author/{authorId}")]
+	public async Task<ActionResult> GetAllByReaderId([FromQuery] GetAllMangaByReaderIdQuery query)
 	{
-		var result = _mediator.Send(query);
+		var result = await _mediator.Send(query);
 		return Ok(result);
 	}
 
-	[HttpGet("all")]
-	public ActionResult GetAllPaged([FromBody] GetAllMangaPagedQuery query)
+	[HttpGet("{mangaPerPage}")]
+	public async Task<ActionResult> GetAllPaged([FromQuery] GetAllMangaPagedQuery query)
 	{
-		var result = _mediator.Send(query);
+		var result = await _mediator.Send(query);
 		return Ok(result);
 	}
 
-	[HttpGet("one")]
-	public ActionResult Get([FromBody] GetMangaQuery query)
+	[HttpGet("{mangaId}")]
+	public async Task<ActionResult> Get([FromQuery] GetMangaQuery query)
 	{
-		var result = _mediator.Send(query);
+		var result = await _mediator.Send(query);
 		return Ok(result);
 	}
 
 	[Authorize]
 	[HttpPost("author/new")]
-	public ActionResult CreateAuthor([FromBody] CreateAuthorCommand command)
+	public async Task<ActionResult> CreateAuthor([FromBody] CreateAuthorCommand command)
 	{
-		var result = _mediator.Send(command);
+		var result = await _mediator.Send(command);
 		return Ok(result);
 	}
 
 	[Authorize]
 	[HttpPost("reader/new")]
-	public ActionResult CreateReader([FromBody] CreateReaderCommand command)
+	public async Task<ActionResult> CreateReader([FromBody] CreateReaderCommand command)
 	{
-		var result = _mediator.Send(command);
+		var result = await _mediator.Send(command);
 		return Ok(result);
 	}
 
-	// [Authorize]
+	[Authorize]
 	[HttpPost("new")]
-	public ActionResult PostManga([FromBody] PostMangaCommand command)
+	public async Task<ActionResult> PostManga([FromBody] PostMangaCommand command)
 	{
-		_logger.LogInformation(0, "new");
-		_mediator.Send(command);
+		await _mediator.Send(command);
 		return Ok();
-	}
-
-	[HttpPost("test")]
-	public ActionResult Test([FromBody] string test)
-	{
-		return Ok(test);
 	}
 
 	[Authorize]
 	[HttpPost("update")]
-	public ActionResult ChangeManga([FromBody] ChangeMangaCommand command)
+	public async Task<ActionResult> ChangeManga([FromBody] ChangeMangaCommand command)
 	{
-		_mediator.Send(command);
+		await _mediator.Send(command);
 		return Ok();
 	}
 
 	[Authorize]
-	[HttpPost("bookmark")]
-	public ActionResult BookmarkManga([FromBody] BookmarkMangaCommand command)
+	[HttpPost("reader/bookmark")]
+	public async Task<ActionResult> BookmarkManga([FromBody] BookmarkMangaCommand command)
 	{
-		_mediator.Send(command);
+		await _mediator.Send(command);
 		return Ok();
 	}
 }

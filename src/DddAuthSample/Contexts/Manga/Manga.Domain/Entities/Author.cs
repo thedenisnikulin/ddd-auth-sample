@@ -11,6 +11,8 @@ public class Author : Entity, IAggregateRoot
 	private List<Manga> _publishedManga;
 	public IReadOnlyCollection<Manga> PublishedManga => _publishedManga.AsReadOnly();
 
+	private Author() {}
+
 	private Author(UserId userId)
 	{
 		Id = new AuthorId(Guid.NewGuid());

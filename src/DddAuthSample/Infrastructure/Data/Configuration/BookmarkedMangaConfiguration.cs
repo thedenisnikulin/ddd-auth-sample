@@ -23,13 +23,16 @@ public class BookmarkedMangaConfiguration : IEntityTypeConfiguration<BookmarkedM
 			p => Enum.Parse<Bookmark>(p)
 		);
 
+		builder.HasKey(bm => new { bm.ReaderId, bm.MangaId });
+
 		builder.Property(bm => bm.ReaderId).IsRequired();
 
-		builder.Property(bm => bm.Bookmark).HasConversion(mangaIdConverter);
+		builder.Property(bm => bm.Bookmark).HasConversion(bookmarkConverter);
 		builder.Property(bm => bm.ReaderId).HasConversion(readerIdConverter);
 
 		builder
-			.HasOne(bm => bm.Manga)
-			.WithOne();
+			.HasOne<DomainManga>()
+			.WithOne()
+			.HasForeignKey<BookmarkedManga>(bm => bm.MangaId);
 	}
 }

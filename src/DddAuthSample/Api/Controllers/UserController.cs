@@ -18,16 +18,20 @@ public class UserController : ControllerBase
 	}
 
 	[HttpPost("register")]
-	public ActionResult Register([FromBody] RegisterUserCommand command)
+	public async Task<ActionResult> Register([FromBody] RegisterUserCommand command)
 	{
-		_mediator.Send(command);
+		await _mediator.Send(command);
 		return Ok();
 	}
 
 	[HttpPost("signin")]
-	public ActionResult SignIn([FromBody] SignInUserCommand query)
+	public async Task<ActionResult> SignIn([FromBody] SignInUserCommand query)
 	{
-		var result = _mediator.Send(query);
-		return Ok(result);
+		var result = await _mediator.Send(query);
+		if (result.IsFailed)
+		{
+			return NotFound();
+		}
+		return Ok(result.Value);
 	}
 }

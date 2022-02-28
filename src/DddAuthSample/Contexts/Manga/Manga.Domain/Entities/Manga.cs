@@ -9,6 +9,8 @@ public class Manga : Entity, IAggregateRoot
 	public string Title { get; private set; }
 	public AuthorId AuthorId { get; }
 
+	private Manga() {}
+
 	private Manga(string title, AuthorId authorId)
 	{
 		Id = new MangaId(Guid.NewGuid());

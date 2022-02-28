@@ -12,6 +12,8 @@ public class RefreshSession : Entity
 	public DateTime ExpiresAt { get; }
 	public DateTime CreatedAt { get; }
 
+	private RefreshSession() {}
+
 	private RefreshSession(
 		UserId userId,
 		string refreshToken,

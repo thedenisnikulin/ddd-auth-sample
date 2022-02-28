@@ -11,20 +11,22 @@ public enum Bookmark
 
 public class BookmarkedManga : Entity 
 {
-	public Manga Manga { get; }
+	public MangaId MangaId { get; }
 	public Bookmark Bookmark { get; private set; }
 	public ReaderId ReaderId { get; }
 
-	private BookmarkedManga(Manga manga, Bookmark bookmark, ReaderId readerId)
+	private BookmarkedManga() {}
+
+	private BookmarkedManga(MangaId mangaId, Bookmark bookmark, ReaderId readerId)
 	{
-		Manga = manga;
+		MangaId = mangaId;
 		Bookmark = bookmark;
 		ReaderId = readerId;
 	}
 
-	public static BookmarkedManga Create(Manga manga, Bookmark bookmark, ReaderId readerId)
+	public static BookmarkedManga Create(MangaId mangaId, Bookmark bookmark, ReaderId readerId)
 	{
-		var bookmarkedManga = new BookmarkedManga(manga, bookmark, readerId);
+		var bookmarkedManga = new BookmarkedManga(mangaId, bookmark, readerId);
 		
 		return bookmarkedManga;
 	}

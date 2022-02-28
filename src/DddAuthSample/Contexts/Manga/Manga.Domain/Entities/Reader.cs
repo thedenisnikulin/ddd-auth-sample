@@ -11,6 +11,8 @@ public class Reader : Entity, IAggregateRoot
 	private List<BookmarkedManga> _bookmarkedManga { get; }
 	public IReadOnlyCollection<BookmarkedManga> BookmarkedManga => _bookmarkedManga.AsReadOnly();
 
+	private Reader() {}
+
 	private Reader(UserId userId)
 	{
 		Id = new ReaderId(Guid.NewGuid());
@@ -26,26 +28,26 @@ public class Reader : Entity, IAggregateRoot
 		return reader;
 	}
 
-	public void AddMangaToBookmarks(Manga manga, Bookmark bookmark)
+	public void AddMangaToBookmarks(MangaId mangaId, Bookmark bookmark)
 	{
-		_bookmarkedManga.Add(Domain.Entities.BookmarkedManga.Create(manga, bookmark, Id));
+		_bookmarkedManga.Add(Domain.Entities.BookmarkedManga.Create(mangaId, bookmark, Id));
 
-		AddDomainEvent(new MangaBookmarked(Id, manga.Id));
+		AddDomainEvent(new MangaBookmarked(Id, mangaId));
 	}
 
-	public void ChangeBookmarkedManga(Manga manga, Bookmark bookmark)
+	public void ChangeBookmarkedManga(MangaId mangaId, Bookmark bookmark)
 	{
-		var mangaToChange = _bookmarkedManga.Find(bm => bm.Manga.Id == manga.Id);
+		var mangaToChange = _bookmarkedManga.Find(bm => bm.MangaId == mangaId);
 		mangaToChange?.ChangeBookmark(bookmark);
 
-		AddDomainEvent(new BookmarkedMangaChanged(Id, manga.Id));
+		AddDomainEvent(new BookmarkedMangaChanged(Id, mangaId));
 	}
 
-	public void RemoveBookmarkedManga(Manga manga)
+	public void RemoveBookmarkedManga(MangaId mangaId)
 	{
-		var mangaToRemove = _bookmarkedManga.Find(bm => bm.Manga.Id == manga.Id);
+		var mangaToRemove = _bookmarkedManga.Find(bm => bm.MangaId == mangaId);
 		_bookmarkedManga.Remove(mangaToRemove);
 
-		AddDomainEvent(new BookmarkedMangaRemoved(Id, manga.Id));
+		AddDomainEvent(new BookmarkedMangaRemoved(Id, mangaId));
 	}
 }
