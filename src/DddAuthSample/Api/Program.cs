@@ -28,9 +28,9 @@ builder.Services.AddDbContext<AppDbContext>(opts =>
     opts.UseNpgsql(builder.Configuration.GetConnectionString("Default")));
 
 // Identity
-var identityBuilder = builder.Services.AddIdentityCore<AppUser>();
+var identityBuilder = builder.Services.AddIdentityCore<UserDataModel>();
 identityBuilder.AddEntityFrameworkStores<AppDbContext>();
-identityBuilder.AddUserManager<UserManager<AppUser>>();
+identityBuilder.AddUserManager<UserManager<UserDataModel>>();
 
 // MediatR
 builder.Services.AddMediatR(typeof(RegisterUserCommand).Assembly, typeof(PostMangaCommand).Assembly);
@@ -76,7 +76,7 @@ builder.Services.Configure<JwtIssuerOptions>(
 builder.Services.Configure<RefreshSessionOptions>(
 	builder.Configuration.GetSection(RefreshSessionOptions.RefreshSession));
 
-builder.Services.AddAutoMapper(typeof(Infrastructure.Identity.MappingProfile).Assembly);
+builder.Services.AddAutoMapper(typeof(Infrastructure.Data.MappingProfile).Assembly);
 
 
 var app = builder.Build();

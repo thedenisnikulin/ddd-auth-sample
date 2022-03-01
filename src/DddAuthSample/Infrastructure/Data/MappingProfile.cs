@@ -3,10 +3,9 @@ using Identity.Domain.Entities;
 using Infrastructure.Data.Models;
 using Manga.Domain.Entities;
 using SharedKernel;
+using DomainManga = Manga.Domain.Entities.Manga;
 
 namespace Infrastructure.Data;
-
-using DomainManga = Manga.Domain.Entities.Manga;
 
 public class MappingProfile : Profile
 {
