@@ -12,7 +12,7 @@ public class RefreshSession : Entity
 	public DateTime ExpiresAt { get; }
 	public DateTime CreatedAt { get; }
 
-	private RefreshSession() {}
+	protected RefreshSession() {}
 
 	private RefreshSession(
 		UserId userId,

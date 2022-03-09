@@ -25,7 +25,10 @@ builder.Services.AddSwaggerGen();
 
 // Database
 builder.Services.AddDbContext<AppDbContext>(opts =>
-    opts.UseNpgsql(builder.Configuration.GetConnectionString("Default")));
+{
+	opts.EnableSensitiveDataLogging();
+    opts.UseNpgsql(builder.Configuration.GetConnectionString("Default"));
+});
 
 // Identity
 var identityBuilder = builder.Services.AddIdentityCore<UserDataModel>();

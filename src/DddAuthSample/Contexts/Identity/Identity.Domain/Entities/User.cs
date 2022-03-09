@@ -7,11 +7,23 @@ namespace Identity.Domain.Entities;
 
 public class User : Entity, IAggregateRoot
 {
-	public UserId Id { get; }
+	public UserId Id { get; private set; }
 	public string Name { get; private set; }
 	public string HashedPassword { get; private set; }
 	private List<RefreshSession> _refreshSessions;
-	public IReadOnlyList<RefreshSession> RefreshSessions => _refreshSessions.AsReadOnly();
+	public IReadOnlyList<RefreshSession> RefreshSessions
+	{
+		get
+		{
+			return _refreshSessions.AsReadOnly();
+		}
+		set
+		{
+			_refreshSessions = value.ToList();
+		}
+	}
+
+	private User() {}
 
 	private User(string name, string hashedPassword)
 	{

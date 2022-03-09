@@ -4,5 +4,5 @@ public class RefreshSessionOptions
 {
 	public const string RefreshSession = "RefreshSession";
 
-	public int ValidForInDays { get; }
+	public int ValidForInDays { get; set; }
 }

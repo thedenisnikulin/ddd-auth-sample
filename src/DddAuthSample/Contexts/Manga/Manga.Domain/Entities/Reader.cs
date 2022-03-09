@@ -8,8 +8,18 @@ public class Reader : Entity, IAggregateRoot
 {
 	public ReaderId Id { get; }
 	public UserId UserId { get; }
-	private List<BookmarkedManga> _bookmarkedManga { get; }
-	public IReadOnlyCollection<BookmarkedManga> BookmarkedManga => _bookmarkedManga.AsReadOnly();
+	private List<BookmarkedManga> _bookmarkedManga;
+	public IReadOnlyCollection<BookmarkedManga> BookmarkedManga
+	{
+		get
+		{
+			return _bookmarkedManga.AsReadOnly();
+		}
+		set 
+		{
+			_bookmarkedManga = value.ToList();
+		}
+	}
 
 	private Reader() {}
 

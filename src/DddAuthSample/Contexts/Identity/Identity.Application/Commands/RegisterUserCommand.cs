@@ -12,23 +12,19 @@ public class RegisterUserCommand : IRequest
 	public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand>
 	{
 		private readonly IUserService _userService;
-		private readonly IEncryptionService _encryptionService;
 
-		public RegisterUserCommandHandler(IUserService userService, IEncryptionService encryptionService)
+		public RegisterUserCommandHandler(IUserService userService)
 		{
 			_userService = userService;
-			_encryptionService = encryptionService;
 		}
 
 		public async Task<Unit> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
 		{
-			var password = _encryptionService.EncryptPassword(request.Password);
-			
 			// There used to be a domain service for checking uniqueness of the username,
 			// but I decided that it's the responsibility of persistance layer,
 			// so the persistance exception will be raised if name is not unique
 
-			var user = User.Create(request.UserName, password);
+			var user = User.Create(request.UserName, request.Password);
 
 			await _userService.Create(user);
 

@@ -18,18 +18,15 @@ public class SignInUserCommand : IRequest<Result<AuthenticationTokensDto>>
 	public class SignInUserCommandHandler : IRequestHandler<SignInUserCommand, Result<AuthenticationTokensDto>>
 	{
 		private readonly IUserService _userService;
-		private readonly IEncryptionService _encryptionService;
 		private readonly ITokenFactory _tokenFactory;
 		private readonly RefreshSessionOptions _refreshSessionOptions;
 
 		public SignInUserCommandHandler(
 			IUserService userService,
-			IEncryptionService encryptionService,
 			ITokenFactory tokenFactory,
 			IOptions<RefreshSessionOptions> refreshSessionOptions)
 		{
 			_userService = userService;
-			_encryptionService = encryptionService;
 			_tokenFactory = tokenFactory;
 			_refreshSessionOptions = refreshSessionOptions.Value;
 		}
@@ -37,7 +34,7 @@ public class SignInUserCommand : IRequest<Result<AuthenticationTokensDto>>
 		public async Task<Result<AuthenticationTokensDto>> Handle(SignInUserCommand request, CancellationToken cancellationToken)
 		{
 			var user = await _userService.GetByName(request.UserName);
-			var isPasswordVerified = _encryptionService.VerifyPassword(user.HashedPassword, request.Password);
+			var isPasswordVerified = await _userService.VerifyPassword(user, request.Password);
 
 			if (!isPasswordVerified)
 			{
@@ -48,7 +45,6 @@ public class SignInUserCommand : IRequest<Result<AuthenticationTokensDto>>
 				_tokenFactory.GenerateAccessToken(user),
 				_tokenFactory.GenerateRefreshToken());
 
-			// better configure expiration date via injected options
 			user.AddRefreshSession(
 					RefreshSession.Create(
 						user.Id,
