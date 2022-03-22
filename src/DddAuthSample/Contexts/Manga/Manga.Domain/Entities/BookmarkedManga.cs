@@ -11,9 +11,9 @@ public enum Bookmark
 
 public class BookmarkedManga : Entity 
 {
-	public MangaId MangaId { get; }
+	public MangaId MangaId { get; private set; }
 	public Bookmark Bookmark { get; private set; }
-	public ReaderId ReaderId { get; }
+	public ReaderId ReaderId { get; private set; }
 
 	private BookmarkedManga() {}
 

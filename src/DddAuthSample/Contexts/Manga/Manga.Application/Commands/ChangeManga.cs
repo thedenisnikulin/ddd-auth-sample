@@ -33,6 +33,7 @@ public class ChangeMangaCommand : IRequest<Unit>
 		
 			author.ChangePublishedMangaTitle(manga, request.NewMangaTitle);
 
+			_authorRepository.Update(author);
 			_authorRepository.Save();
 			return Unit.Task;
 		}

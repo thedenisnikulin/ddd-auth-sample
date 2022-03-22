@@ -5,9 +5,9 @@ namespace Manga.Domain.Entities;
 
 public class Manga : Entity, IAggregateRoot
 {
-	public MangaId Id { get; }
+	public MangaId Id { get; private set; }
 	public string Title { get; private set; }
-	public AuthorId AuthorId { get; }
+	public AuthorId AuthorId { get; private set; }
 
 	private Manga() {}
 

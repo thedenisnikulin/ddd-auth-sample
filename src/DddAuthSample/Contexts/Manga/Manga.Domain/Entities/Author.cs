@@ -6,10 +6,14 @@ namespace Manga.Domain.Entities;
 
 public class Author : Entity, IAggregateRoot
 {
-	public AuthorId Id { get; }
-	public UserId UserId { get; }
+	public AuthorId Id { get; private set; }
+	public UserId UserId { get; private set; }
 	private List<Manga> _publishedManga;
-	public IReadOnlyCollection<Manga> PublishedManga => _publishedManga.AsReadOnly();
+	public IReadOnlyCollection<Manga> PublishedManga
+	{
+		get => _publishedManga.AsReadOnly();
+		private set => _publishedManga = value.ToList();
+	}
 
 	private Author() {}
 

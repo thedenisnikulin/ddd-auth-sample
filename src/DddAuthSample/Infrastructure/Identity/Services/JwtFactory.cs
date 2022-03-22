@@ -19,15 +19,15 @@ public class JwtFactory : ITokenFactory
 
 	public string GenerateAccessToken(User user)
 	{
-		var now = DateTime.Now;
+		var now = DateTimeOffset.Now;
 		return JwtBuilder.Create()
 			.WithAlgorithm(new HMACSHA256Algorithm())
 			.WithSecret(_jwtOptions.Secret)
 			.AddClaim(JwtRegisteredClaimNames.Sub, user.Id.Value)
 			.AddClaim(JwtRegisteredClaimNames.Iss, _jwtOptions.Issuer)
-			.AddClaim(JwtRegisteredClaimNames.Aud, user.Id.Value)
-			.AddClaim(JwtRegisteredClaimNames.Iat, now)
-			.AddClaim(JwtRegisteredClaimNames.Exp, now.AddMinutes(_jwtOptions.ValidForInMinutes))
+			.AddClaim(JwtRegisteredClaimNames.Aud, _jwtOptions.Audience)
+			.AddClaim(JwtRegisteredClaimNames.Iat, now.ToUnixTimeSeconds())
+			.AddClaim(JwtRegisteredClaimNames.Exp, now.AddMinutes(_jwtOptions.ValidForInMinutes).ToUnixTimeSeconds())
 			.Encode();
 	}
 

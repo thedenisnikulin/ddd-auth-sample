@@ -1,3 +1,4 @@
+using Microsoft.IdentityModel.Logging;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Infrastructure.Data;
@@ -51,6 +52,8 @@ builder.Services
 			IssuerSigningKey = key,
 			ValidateIssuer = true,
 			ValidateAudience = true,
+			ValidIssuers = new[] { builder.Configuration["JwtIssuer:Issuer"] },
+			ValidAudiences= new[] { builder.Configuration["JwtIssuer:Audience"] }
 		};
 
 		opt.Events = new JwtBearerEvents
@@ -81,8 +84,9 @@ builder.Services.Configure<RefreshSessionOptions>(
 
 builder.Services.AddAutoMapper(typeof(Infrastructure.Data.MappingProfile).Assembly);
 
-
 var app = builder.Build();
+
+IdentityModelEventSource.ShowPII = true;
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

@@ -9,9 +9,10 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="11.0.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.2" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.2" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="6.0.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="6.0.3" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.11.0" />
     <PackageReference Include="Moq" Version="4.17.2" />
     <PackageReference Include="xunit" Version="2.4.1" />
@@ -27,7 +28,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\DddAuthSample\Infrastructure\Infrastructure.csproj" />
-    <ProjectReference Include="..\..\src\DddAuthSample\Api\Api.csproj" />
+    <ProjectReference Include="..\..\src\DddAuthSample\Contexts\Manga\Manga.Application\Manga.Application.csproj" />
+    <ProjectReference Include="..\..\src\DddAuthSample\Contexts\Manga\Manga.Domain\Manga.Domain.csproj" />
   </ItemGroup>
 
 </Project>

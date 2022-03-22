@@ -24,8 +24,11 @@ public class PostMangaCommand : IRequest<Unit>
 		{
 			var authorId = new AuthorId(request.AuthorId);
 			var author = _authorRepository.GetById(authorId);
+
 			var manga = Manga.CreateManga(request.Title, authorId);
 			author.PublishManga(manga);
+
+			_authorRepository.Update(author);
 			_authorRepository.Save();
 			return Unit.Task;
 		}

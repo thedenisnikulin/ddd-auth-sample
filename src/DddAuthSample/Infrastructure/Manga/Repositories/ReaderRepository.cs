@@ -18,16 +18,25 @@ public class ReaderRepository : IReaderRepository
 		_mapper = mapper;
 	}
 
+	public Reader? GetById(ReaderId readerId)
+	{
+		var reader = _context.Readers.FirstOrDefault(a => a.Id == _mapper.Map<Guid>(readerId));
+		return _mapper.Map<Reader>(reader);
+	}
+
 	public void Add(Reader reader)
 	{
 		var readerDataModel = _mapper.Map<ReaderDataModel>(reader);
 		_context.Readers.Add(readerDataModel);
 	}
 
-	public Reader? GetById(ReaderId readerId)
+	public void Update(Reader reader)
 	{
-		var reader = _context.Readers.FirstOrDefault(a => a.Id == _mapper.Map<Guid>(readerId));
-		return _mapper.Map<Reader>(reader);
+		var updatedReaderDataModel = _mapper.Map<ReaderDataModel>(reader);
+		var trackedReaderDataModel = _context.Readers.Find(updatedReaderDataModel.Id);
+
+		_context.Entry(trackedReaderDataModel).CurrentValues.SetValues(updatedReaderDataModel);
+		trackedReaderDataModel.BookmarkedManga = updatedReaderDataModel.BookmarkedManga;
 	}
 
 	public void Remove(Reader reader)

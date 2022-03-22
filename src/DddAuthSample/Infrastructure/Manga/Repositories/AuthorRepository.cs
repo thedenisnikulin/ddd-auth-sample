@@ -18,16 +18,25 @@ public class AuthorRepository : IAuthorRepository
 		_mapper = mapper;
 	}
 
+	public Author? GetById(AuthorId authorId)
+	{
+		var authorDataModel = _context.Authors.FirstOrDefault(a => a.Id == authorId.Value);
+		return _mapper.Map<Author>(authorDataModel);
+	}
+
 	public void Add(Author author)
 	{
 		var authorDataModel = _mapper.Map<AuthorDataModel>(author);
 		_context.Authors.Add(authorDataModel);
 	}
 
-	public Author? GetById(AuthorId authorId)
+	public void Update(Author author)
 	{
-		var author = _context.Authors.FirstOrDefault(a => a.Id == _mapper.Map<Guid>(authorId));
-		return _mapper.Map<Author>(author);
+		var updatedAuthorDataModel = _mapper.Map<AuthorDataModel>(author);
+		var trackedAuthorDataModel = _context.Authors.Find(updatedAuthorDataModel.Id);
+
+		_context.Entry(trackedAuthorDataModel).CurrentValues.SetValues(updatedAuthorDataModel);
+		trackedAuthorDataModel.PublishedManga = updatedAuthorDataModel.PublishedManga;
 	}
 
 	public void Remove(Author author)

@@ -6,19 +6,13 @@ namespace Manga.Domain.Entities;
 
 public class Reader : Entity, IAggregateRoot
 {
-	public ReaderId Id { get; }
-	public UserId UserId { get; }
+	public ReaderId Id { get; private set; }
+	public UserId UserId { get; private set; }
 	private List<BookmarkedManga> _bookmarkedManga;
 	public IReadOnlyCollection<BookmarkedManga> BookmarkedManga
 	{
-		get
-		{
-			return _bookmarkedManga.AsReadOnly();
-		}
-		set 
-		{
-			_bookmarkedManga = value.ToList();
-		}
+		get => _bookmarkedManga.AsReadOnly();
+		set => _bookmarkedManga = value.ToList();
 	}
 
 	private Reader() {}

@@ -37,7 +37,7 @@ public class UserService : IUserService
 		var updatedUserDataModel = _mapper.Map<UserDataModel>(user);
 		var trackedUserDataModel = _context.Users.Find(user.Id.Value);
 
-		_context.Entry(trackedUserDataModel).OriginalValues.SetValues(updatedUserDataModel);
+		_context.Entry(trackedUserDataModel).CurrentValues.SetValues(updatedUserDataModel);
 
 		await _userManager.UpdateSecurityStampAsync(trackedUserDataModel);
 		trackedUserDataModel.RefreshSessions = updatedUserDataModel.RefreshSessions;

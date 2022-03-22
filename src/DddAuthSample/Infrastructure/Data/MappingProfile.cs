@@ -54,10 +54,11 @@ public class MappingProfile : Profile
 
 		CreateMap<AuthorDataModel, Author>()
 			.ForMember(
-					dest => dest.PublishedManga,
-					opt => opt.MapFrom(src => src.PublishedManga == null
-						? new List<MangaDataModel>().AsReadOnly()
-						: src.PublishedManga.AsReadOnly()))
+				dest => dest.PublishedManga,
+				opt => opt.MapFrom(src =>
+					src.PublishedManga == null
+					? new List<MangaDataModel>().AsReadOnly()
+					: src.PublishedManga.AsReadOnly()))
 			.ReverseMap();
 		CreateMap<ReaderDataModel, Reader>()
 			.ForMember(
