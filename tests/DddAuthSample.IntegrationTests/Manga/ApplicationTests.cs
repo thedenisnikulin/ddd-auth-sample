@@ -7,6 +7,7 @@ using Infrastructure.Manga.Repositories;
 using System.Threading.Tasks;
 using Manga.Application.Commands;
 using System.Threading;
+using System.Linq;
 
 namespace DddAuthSample.IntegrationTests.Manga;
 
@@ -15,7 +16,7 @@ public class ApplicationTests
 	private (AppDbContext, Mapper) _arrangeCommonDependencies()
 	{
 		var dbOptions = new DbContextOptionsBuilder<AppDbContext>()
-			.UseInMemoryDatabase("MangaDb")
+			.UseInMemoryDatabase("MangaDb " + Guid.NewGuid().ToString())
 			.Options;
 
 		var context = new AppDbContext(dbOptions);
@@ -69,13 +70,16 @@ public class ApplicationTests
 		var (context, mapper) = _arrangeCommonDependencies();
 		var authorId = Guid.NewGuid();
 
+		System.Console.WriteLine(context.Authors.ToList().Aggregate("before add: ", (acc, el) => acc += $"{el.Id.ToString()}, "));
 		context.Authors.Add(new Infrastructure.Data.Models.AuthorDataModel
 		{
 			Id = authorId,
 			UserId = Guid.Empty,
 			PublishedManga = new()
 		});
-		await context.SaveChangesAsync();
+		context.SaveChanges();
+
+		System.Console.WriteLine(context.Authors.ToList().Aggregate("after save: ", (acc, el) => acc += $"{el.Id.ToString()}, "));
 
 		var repo = new AuthorRepository(context, mapper);
 		var handler = new PostMangaCommand.PostMangaCommandHandler(repo);
@@ -85,9 +89,9 @@ public class ApplicationTests
 		_ = await handler.Handle(command, new CancellationToken());
 
 		// Assert 
-		Assert.NotEmpty(await context.Manga.ToListAsync());
+		Assert.NotEmpty(context.Manga.ToList());
 		Assert.NotEmpty(context.Authors.Find(authorId).PublishedManga);
-		Assert.Equal((await context.Manga.ToListAsync())[0].Title, command.Title);
-		Assert.Equal((await context.Manga.ToListAsync())[0].AuthorId, command.AuthorId);
+		Assert.Equal(context.Manga.ToList().Last().Title, command.Title);
+		Assert.Equal(context.Manga.ToList().Last().AuthorId, command.AuthorId);
 	}
 }

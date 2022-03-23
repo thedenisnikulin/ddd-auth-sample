@@ -1,2 +1,1 @@
-# sample-authentication-aspnetcore
-Made for education purposes. Based on https://github.com/thedenisnikulin/chattitude-app-backend
+# A simple CRUD app with authentication. Built with DDD in mind
